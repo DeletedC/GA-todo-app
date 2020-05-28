@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 
 const todoController = express.Router();
-const todo = require('../models/todo.js');
+const Todo = require('../models/todo.js');
 
 const show = console.log;
 
@@ -14,7 +14,13 @@ const show = console.log;
 
 // INDEX ROUTE
 todoController.get('/', (req, res) => {
-    res.render('Index');
+    Todo.find({}, (error, list) => {
+        if (error) {
+            show(error);
+        } else {
+            res.render('Index', {todoList: list});
+        }
+    });
 });
 
 
