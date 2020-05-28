@@ -9,6 +9,8 @@ const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const db = mongoose.connection;
 
+const todoController = require('./controllers/todo.js');
+
 const PORT = process.env.PORT || 3000;
 const show = console.log;
 
@@ -38,6 +40,7 @@ db.on('disconnected', () => show('mongo disconnected'));
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 
+app.use('/todo', todoController);
 
 ///////////////
 // ROUTES
