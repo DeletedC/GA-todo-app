@@ -20,6 +20,13 @@ class Index extends React.Component {
                     );
                 })}
             </ul>
+            
+            <hr></hr>
+            
+            <form action="/todo" method="POST">
+                <input type="text" name="todo" required/>
+                <input type="submit" value="Add To Do"/>
+            </form>
             </>
         );
     };

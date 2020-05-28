@@ -10,7 +10,7 @@ const show = console.log;
 // ROUTES
 ////////////////
 
-// === PRESENTATION ===
+// === PRESENTATION ROUTES ===
 
 // INDEX ROUTE
 todoController.get('/', (req, res) => {
@@ -23,6 +23,18 @@ todoController.get('/', (req, res) => {
     });
 });
 
+// === FUNCTIONAL ROUTES ===
+
+// CREATE ROUTE
+todoController.post('/', (req, res) => {
+    Todo.create(req.body, (error, newTodo) => {
+        if (error) {
+            show(error);
+        } else {
+            res.redirect('/');
+        }
+    });
+});
 
 // EXPORT
 module.exports = todoController;
