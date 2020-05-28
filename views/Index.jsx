@@ -13,8 +13,10 @@ class Index extends React.Component {
         return (
             <Layout>
                 <h1>To Do List</h1>
+                
+                {/* Display empty notice if list is empty */}
+                {todoList.length === 0? emptyNotice : ""}
                 <ul>
-                    {todoList.length === 0? emptyNotice : ""}
                     {todoList.map((item, index) => {
                         return (
                                 <li key={index}>{item.todo}
