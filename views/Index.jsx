@@ -16,7 +16,12 @@ class Index extends React.Component {
                 {todoList.length === 0? emptyNotice : ""}
                 {todoList.map((item, index) => {
                     return (
-                        <li>{item.todo}</li>
+                        <>
+                            <li>{item.todo}</li>
+                            <form action={`/todo/${item._id}?_method=DELETE`} method="post">
+                                <input type="submit" value="DELETE"/>
+                            </form>
+                        </>
                     );
                 })}
             </ul>

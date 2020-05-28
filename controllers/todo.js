@@ -36,5 +36,16 @@ todoController.post('/', (req, res) => {
     });
 });
 
+// DELETE ROUTE
+todoController.delete('/:id', (req, res) => {
+    Todo.findByIdAndRemove(req.params.id, (error, data) => {
+        if (error) {
+            show(error);
+        } else {
+            res.redirect('/todo');
+        }
+    });
+});
+
 // EXPORT
 module.exports = todoController;
