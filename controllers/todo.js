@@ -14,7 +14,7 @@ const show = console.log;
 
 // INDEX ROUTE
 todoController.get('/', (req, res) => {
-    res.send('Index');
+    res.render('Index');
 });
 
 
