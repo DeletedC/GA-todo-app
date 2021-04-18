@@ -6,14 +6,57 @@ const Todo = require('../models/todo.js');
 
 const show = console.log;
 
+////////////////////
+// MIDDLEWARE
+////////////////////
+
+// Mongo connection checker
+const dbChecker = function (req, res, next) {
+    try {
+        // If the database is NOT connected
+        if (mongoose.connection.readyState == 0) {
+            res.render('Index', {toDoList: 'noDatabase'});
+
+        // If the database is CONNECTED
+        } else {
+            next();
+        }
+    } catch (error) {
+        res.send(error);
+    }
+}
+
 ////////////////
 // ROUTES
 ////////////////
 
 // === PRESENTATION ROUTES ===
 
+// // SAMPLE CODE FROM STUDENT TRACKER APP
+// studentsController.get('/', async (req, res) => {
+//     try {
+//         // First, verify that the database is connected
+//         if (mongoose.connection.readyState == 0) {
+//             res.render('Index', {students: 'noDatabase'});
+//         } else {
+//             await Student.find({}, (error, allStudents) => {
+//                 if (error) {
+//                     show(error);
+//                 } else {
+//                     res.render('Index', {students: allStudents});
+//                 }
+//             });
+//         }      
+//     } catch (error) {
+//         res.send(error);
+//     }
+
+// });
+
+
+
 // INDEX ROUTE
-todoController.get('/', (req, res) => {
+todoController.get('/', dbChecker, (req, res) => {
     Todo.find({}, (error, list) => {
         if (error) {
             show(error);
@@ -49,3 +92,4 @@ todoController.delete('/:id', (req, res) => {
 
 // EXPORT
 module.exports = todoController;
+
