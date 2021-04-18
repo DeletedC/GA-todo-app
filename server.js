@@ -8,6 +8,7 @@ const app = express();
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const db = mongoose.connection;
+require('dotenv').config();
 
 const todoController = require('./controllers/todo.js');
 
@@ -30,9 +31,10 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/project2-ass
 mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useFindAndModify: true, useUnifiedTopology:true});
 
 // Mongo Error / success
-db.on('error', (error) => show(error.message + ' is Mongod not running?'));
-db.on('connected', () => show('mongo connected: ', MONGODB_URI));
-db.on('disconnected', () => show('mongo disconnected'));
+db.on('error', (error) => show(error.message));
+db.on('connected', () => show('Mongo is now connected.'));
+db.on('disconnected', () => show('Mongo disconnected.'));
+db.on('close', () => show('Mongo connection is now closed.'))
 
 ////////////////////
 // MIDDLEWARE
