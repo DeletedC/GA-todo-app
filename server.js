@@ -28,7 +28,7 @@ app.engine('jsx', require('express-react-views').createEngine());
 
 //Connecting Mongo to Heroku or local storage
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/project2-assessment';
-mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useFindAndModify: true, useUnifiedTopology:true});
+mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology:true});
 
 // Mongo Error / success
 db.on('error', (error) => show(error.message));
