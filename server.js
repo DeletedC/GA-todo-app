@@ -43,6 +43,24 @@ db.on('close', () => show('Mongo connection is now closed.'))
 // MIDDLEWARE
 ////////////////////
 
+// Mongo connection checker
+const dbChecker = function (req, res, next) {
+    try {
+        // If the database is NOT connected
+        if (mongoose.connection.readyState == 0) {
+            show('dbChecker: The database is not connected.');
+            res.render('Index', {todoList: 'noDatabase'});
+
+        // If the database is CONNECTED
+        } else {
+            next();
+        }
+    } catch (error) {
+        res.send(error);
+    }
+}
+
+app.use(dbChecker);
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 app.use(express.static('public'));

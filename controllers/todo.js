@@ -6,33 +6,12 @@ const Todo = require('../models/todo.js');
 
 const show = console.log;
 
-////////////////////
-// MIDDLEWARE
-////////////////////
-
-// Mongo connection checker
-const dbChecker = function (req, res, next) {
-    try {
-        // If the database is NOT connected
-        if (mongoose.connection.readyState == 0) {
-            show('No database');
-            res.render('Index', {todoList: 'noDatabase'});
-
-        // If the database is CONNECTED
-        } else {
-            next();
-        }
-    } catch (error) {
-        res.send(error);
-    }
-}
-
 ////////////////
 // ROUTES
 ////////////////
 
 // INDEX ROUTE
-todoController.get('/', dbChecker, (req, res) => {
+todoController.get('/', (req, res) => {
     Todo.find({}, (error, list) => {
         if (error) {
             show(error);
