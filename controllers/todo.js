@@ -15,7 +15,8 @@ const dbChecker = function (req, res, next) {
     try {
         // If the database is NOT connected
         if (mongoose.connection.readyState == 0) {
-            res.render('Index', {toDoList: 'noDatabase'});
+            show('No database');
+            res.render('Index', {todoList: 'noDatabase'});
 
         // If the database is CONNECTED
         } else {
@@ -29,31 +30,6 @@ const dbChecker = function (req, res, next) {
 ////////////////
 // ROUTES
 ////////////////
-
-// === PRESENTATION ROUTES ===
-
-// // SAMPLE CODE FROM STUDENT TRACKER APP
-// studentsController.get('/', async (req, res) => {
-//     try {
-//         // First, verify that the database is connected
-//         if (mongoose.connection.readyState == 0) {
-//             res.render('Index', {students: 'noDatabase'});
-//         } else {
-//             await Student.find({}, (error, allStudents) => {
-//                 if (error) {
-//                     show(error);
-//                 } else {
-//                     res.render('Index', {students: allStudents});
-//                 }
-//             });
-//         }      
-//     } catch (error) {
-//         res.send(error);
-//     }
-
-// });
-
-
 
 // INDEX ROUTE
 todoController.get('/', dbChecker, (req, res) => {
