@@ -8,6 +8,7 @@ const app = express();
 const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const db = mongoose.connection;
+require('dotenv').config();
 
 const todoController = require('./controllers/todo.js');
 
@@ -27,17 +28,39 @@ app.engine('jsx', require('express-react-views').createEngine());
 
 //Connecting Mongo to Heroku or local storage
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/project2-assessment';
-mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useFindAndModify: true, useUnifiedTopology:true});
+mongoose.connect(MONGODB_URI, {useNewUrlParser: true, useFindAndModify: false, useUnifiedTopology:true})
+    .catch(error => {
+        show(`Error connecting to MongoDB: ${error.message}`);
+    });
 
 // Mongo Error / success
-db.on('error', (error) => show(error.message + ' is Mongod not running?'));
-db.on('connected', () => show('mongo connected: ', MONGODB_URI));
-db.on('disconnected', () => show('mongo disconnected'));
+db.on('error', (error) => show(`MongoDB Error: ${error.message}`));
+db.on('connected', () => show('Mongo is now connected.'));
+db.on('disconnected', () => show('Mongo disconnected.'));
+db.on('close', () => show('Mongo connection is now closed.'))
 
 ////////////////////
 // MIDDLEWARE
 ////////////////////
 
+// Mongo connection checker
+const dbChecker = function (req, res, next) {
+    try {
+        // If the database is NOT connected
+        if (mongoose.connection.readyState == 0) {
+            show('dbChecker: The database is not connected.');
+            res.render('Index', {todoList: 'noDatabase'});
+
+        // If the database is CONNECTED
+        } else {
+            next();
+        }
+    } catch (error) {
+        res.send(error);
+    }
+}
+
+app.use(dbChecker);
 app.use(express.urlencoded({ extended: false }));
 app.use(methodOverride('_method'));
 app.use(express.static('public'));

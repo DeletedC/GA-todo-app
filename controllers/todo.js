@@ -10,8 +10,6 @@ const show = console.log;
 // ROUTES
 ////////////////
 
-// === PRESENTATION ROUTES ===
-
 // INDEX ROUTE
 todoController.get('/', (req, res) => {
     Todo.find({}, (error, list) => {
@@ -49,3 +47,4 @@ todoController.delete('/:id', (req, res) => {
 
 // EXPORT
 module.exports = todoController;
+
